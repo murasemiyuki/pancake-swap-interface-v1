@@ -171,11 +171,11 @@ export function useSingleContractMultipleData(
     () =>
       contract && fragment && callInputs && callInputs.length > 0
         ? callInputs.map<Call>((inputs) => {
-            return {
-              address: contract.address,
-              callData: contract.interface.encodeFunctionData(fragment, inputs),
-            }
-          })
+          return {
+            address: contract.address,
+            callData: contract.interface.encodeFunctionData(fragment, inputs),
+          }
+        })
         : [],
     [callInputs, contract, fragment]
   )
@@ -185,7 +185,7 @@ export function useSingleContractMultipleData(
   const latestBlockNumber = useBlockNumber()
 
   return useMemo(() => {
-    return results.map((result) => toCallState(result, contract?.interface, fragment, latestBlockNumber))
+    return results.map((result) => toCallState(result, contract?.interface as any, fragment as any, latestBlockNumber))
   }, [fragment, contract, results, latestBlockNumber])
 }
 
@@ -209,13 +209,13 @@ export function useMultipleContractSingleData(
     () =>
       fragment && addresses && addresses.length > 0 && callData
         ? addresses.map<Call | undefined>((address) => {
-            return address && callData
-              ? {
-                  address,
-                  callData,
-                }
-              : undefined
-          })
+          return address && callData
+            ? {
+              address,
+              callData,
+            }
+            : undefined
+        })
         : [],
     [addresses, callData, fragment]
   )
@@ -240,11 +240,11 @@ export function useSingleCallResult(
   const calls = useMemo<Call[]>(() => {
     return contract && fragment && isValidMethodArgs(inputs)
       ? [
-          {
-            address: contract.address,
-            callData: contract.interface.encodeFunctionData(fragment, inputs),
-          },
-        ]
+        {
+          address: contract.address,
+          callData: contract.interface.encodeFunctionData(fragment, inputs),
+        },
+      ]
       : []
   }, [contract, fragment, inputs])
 
@@ -252,6 +252,6 @@ export function useSingleCallResult(
   const latestBlockNumber = useBlockNumber()
 
   return useMemo(() => {
-    return toCallState(result, contract?.interface, fragment, latestBlockNumber)
+    return toCallState(result, contract?.interface as any, fragment as any, latestBlockNumber)
   }, [result, contract, fragment, latestBlockNumber])
 }
